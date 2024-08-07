@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> </title> 
+	<style type="text/css">
+	  
+	</style>
+</head> 
+{% extends 'inspwdbase.html' %}
+<body>
+    {% block content %}
+
+	<!--Reset Password-->
+    <div>
+	    <h2>비밀번호 재설정</h2>
+		<hr>
+        <p>새 비밀번호를 입력해 주세요.</p>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form }}
+            <button>저장</button>
+        </form>
+    </div>
+
+    {% endblock %}
+   
+   
+	
+</body>
+</html>

@@ -1,0 +1,119 @@
+{% load static %}
+{% load django_bootstrap5 %}
+{% block head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  
+{% endblock head %}
+
+
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block body %}
+<div class="main">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="card"  style="max-width: 50%; margin-top: 5%;">
+                <h4 class="card-header">{{ m_id }} 님의 정보수정</h4>
+                <div class="row justify-content-center align-items-center">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img class="profile_img" id="profile_img" src=""/>
+                        </div>
+                        <form class="mt-3" action="insmember_modify.do" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="update_info" value="1">
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                이메일 : <input type="email" class="form-control" id="m_email" name="m_email" value="{{ m_email }}" readonly>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                아이디 : <input type="text" class="form-control" id="m_id" name="m_id" value="{{ m_id }}">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                이름 : <input type="text" class="form-control" id="m_name" name="m_name" value="{{ m_name }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">수정하기</button>
+                        </form> <br>
+
+                        <div class="mt-3">
+                            <h4>비밀번호 변경</h4>
+                            <form method="POST" action="inspwd_modify.do">
+                                {% csrf_token %}
+                                <input type="hidden" name="change_password" value="1">
+                                <div class="form-group" style="margin-bottom: 10px;">
+                                    현재 비밀번호 : <input type="password" class="form-control" id="exist_m_pwd" name="exist_m_pwd" placeholder="현재 비밀번호를 입력하세요.">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 10px;">
+                                    새 비밀번호 : <input type="password" class="form-control" id="new_m_pwd" name="new_m_pwd" placeholder="변경할 비밀번호를 입력하세요.">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 10px;">
+                                    새 비밀번호 확인 : <input type="password" class="form-control" id="check_m_pwd" name="check_m_pwd" placeholder="비밀번호를 한 번 더 입력해주세요.">
+                                </div> <br>
+                                <button type="submit" class="btn btn-primary" id="modifyPasswordButton">변경하기</button>
+                            </form>
+                            {% if messages %}
+                                <div class="mt-3">
+                                    {% for message in messages %}
+                                        <p class="text-danger">{{ message }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            </div>      
+    
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <script>
+    $(document).ready(function(){
+        //새 비밀번호 - 현재 비밀번호와 같은 경우 에러 메시지 띄우기
+        $('#exist_m_pwd, #new_m_pwd').change(function(){
+            exist_m_pwd = $('#exist_m_pwd').val();
+            new_m_pwd = $('#new_m_pwd').val();
+
+            if(exist_m_pwd == new_m_pwd) {
+                $('#error_msg1').css('display', 'inline');
+                $('#error_msg1').show();
+                $('#new_m_pwd').css('background-color', '#F6CECE');
+            } else {
+                $('#error_msg1').hide();
+                $('#new_m_pwd').css('background-color', '');
+            }
+        });
+
+        //새 비밀번호 확인 - 새 비밀번호와 다른 경우 에러 메시지 띄우기
+        $('#new_m_pwd, #check_m_pwd').change(function(){
+            new_m_pwd = $('#new_m_pwd').val();
+            check_m_pwd = $('#check_m_pwd').val();
+
+            if(new_m_pwd != check_m_pwd) {
+                $('#error_msg2').css('display', 'inline');
+                $('#error_msg2').show();
+                $('#check_m_pwd').css('background-color', '#F6CECE');
+            } else {
+                $('#error_msg2').hide();
+                $('#check_m_pwd').css('background-color', '');
+            }
+        });
+
+        //<변경하기 버튼> - 빈칸은 없는지, 모든 칸이 올바르게 입력되었는지 확인
+        $('#modifyButton').click(function(){
+            exist_m_pwd = $('#exist_m_pwd').val();
+            new_m_pwd = $('#new_m_pwd').val();
+            check_m_pwd = $('#check_m_pwd').val();
+
+            if($('#new_m_pwd').css('background-color') != 'rgb(255, 255, 255)' | $('#check_m_pwd').css('background-color') != 'rgb(255, 255, 255)') {
+                alert("올바르지 않은 입력 값이 있습니다. 다시 입력해주세요.");
+                return false;
+            }
+            if(exist_m_pwd == '' | new_m_pwd == '' | check_m_pwd == ''){
+                alert("입력하지 않은 칸이 있습니다. 모두 입력해주세요.");
+                return false;
+            }
+        });
+    });
+</script> -->
+{% endblock body %}

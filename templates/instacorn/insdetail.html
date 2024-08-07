@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Detail Page</title>
+    <link rel="stylesheet" href="{% static 'css/styles_detail.css' %}">
+    
+    <script src="https://kit.fontawesome.com/b06a377e67.js" crossorigin="anonymous"></script>
+
+    <script>
+      //댓글수정관련 자바스크립트
+      function re_edit(r_num, r_content, r_code){
+        reply_form.bt_save.value = "댓글수정";
+        reply_form.r_num.value = r_num
+        reply_form.r_content.value = r_content
+        reply_form.r_code.value = r_code
+      }//end
+    
+      //댓글저장&수정
+      function re_save(){
+        var bt = reply_form.bt_save.value ;
+        var rnu = reply_form.r_num.value ;
+        var rct = reply_form.r_content.value ;
+        var rco = reply_form.r_code.value ;
+    
+        if(bt=="등록"){
+          if( rct == "" || rct==null ) {
+            alert("내용을 입력해주세요!")
+            return;
+          }
+        var msg = "insreplyinsert.do?r_content="+rct+"&r_code="+rco;
+        document.reply_form.action=msg;
+        document.reply_form.method="post";
+        document.reply_form.submit();
+        }else if(bt=="댓글수정"){
+          reply_form.bt_save.value="댓글저장";
+          var msg = "insreplyupdate.do?r_num="+rnu+"&r_content="+rct+"&r_code="+rco;
+          document.reply_form.action = msg;
+          document.reply_form.method = "post";
+          document.reply_form.submit();
+        }
+      }
+
+      // 팝업 창 열기
+      // function openPopup(url) {
+      //   var popupWindow = window.open(url, "popupWindow", "width=500, height=400, scrollbars=yes");
+      //   popupWindow.onunload = function(){
+      //     window.opener.location.reload();
+      //   }
+      // }
+
+
+      // 게시물 삭제 확인
+      function confirmDelete(idx) {
+        if (confirm("정말 삭제하시겠습니까?")) {
+          location.href = 'insdelete.do?idx=' + idx;
+        }
+      }
+
+      function openPopup(url) {
+          window.open(url, "popupWindow", "width=500, height=400, scrollbars=yes");
+      }
+    </script>
+    <style>
+        .post-image{
+          display: flex;
+          justify-content: center;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .post-container {
+            margin: 0 auto;
+            max-width: 1300px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .user-info {
+          margin-left: 0px;
+        }
+
+        .post-comments {
+              border-top: 1px solid #e1e1e1;
+              padding-top: 10px;
+        }
+
+        .comment {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 10px;
+        }
+
+        .comment-actions{
+          display: flex;
+          gap: 10px;
+        }
+
+        .comment-user {
+              margin-right: 10px;
+        }
+
+        a {          
+          color: inherit;          
+        }
+    </style>
+</head>
+
+<body>
+  <form name="reply_form" method="post" action="insreplyinsert.do">
+    {% csrf_token %}
+    {% for i in result %}
+
+    <div class="post-container">
+        <div class="post-image">
+          <img src="/media/images/{{ i.b_photo }}" alt="Post Image" {% if b_singo_cnt != 0 %} style="filter: blur(10px);" {% endif %}>
+        </div>
+        <div class="post-details">
+            <div class="post-header">
+                <img src="/media/images/{{ i.m_img }}" alt="User Avatar" class="user-avatar">
+                <div class="user-info">
+                    <span class="username"> {{ i.m_id }} </span>
+                </div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+
+                <div align="right">
+                  
+                  {% if i.b_no == m_no %}                  
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <!-- <button type="button" onclick="openPopup('insupdate.do?idx={{idx}}')">수정</button> -->
+                  <a href="javascript:void(0);" onclick="openPopup('insupdate.do?idx={{ idx }}')">
+                    <i class="fas fa-pencil-alt"></i> 
+                  </a> &nbsp;
+                  <!-- <button type="button" onclick="confirmDelete('{{ idx }}')">삭제</button>  -->
+                  <a href="javascript:void(0);" onclick="confirmDelete('{{ idx }}')">
+                    <i class="fas fa-times"></i>
+                  </a>
+                  {% endif %}
+                </div>
+            </div>
+            <div class="post-content">
+                <p id="result">{{ i.b_content }}</p>
+                <p>{{ i.b_date | date:"Y.m.d" }}</p>
+            </div>
+            <div class="post-actions">
+
+            </div>
+            <div style="overflow: auto; height:150px; padding:10px;">
+            {% for reply in rresult %}
+              <div class="post-comments">
+                <div class="comment">
+                    <img src="/media/images/{{ reply.m_img }}" alt="User Avatar" class="user-avatar">
+                    <span class="comment-user">{{ reply.m_id }} </span>
+                    <span class="comment-text">{{ reply.r_content }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="comment-actions">
+                      <!-- <button type="button" onclick="re_edit('{{ reply.r_num }}', '{{ reply.r_content }}', '{{ reply.r_code }}')" {% if reply.r_no != m_no %}style="display: none;"{% endif %}>
+                        수정                        
+                      </button> -->
+                      <a href="javascript:void(0);" onclick="re_edit('{{ reply.r_num }}', '{{ reply.r_content }}', '{{ reply.r_code }}')" {% if reply.r_no != m_no %}style="display: none;"{% endif %} >
+                        <i class="fas fa-pencil-alt"></i>
+                      </a>
+                      
+                      {% if reply.r_no == m_no or i.b_no == m_no %}
+                      <!-- <button type="button" onclick="location.href='insreplydelete.do?ridx={{ reply.r_num }}&idx={{ reply.r_code }}'">
+                        삭제
+                      </button> -->
+                      <a href="insreplydelete.do?ridx={{ reply.r_num }}&idx={{ reply.r_code }}">
+                        <i class="fas fa-times"></i>
+                      </a>
+                      {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+          </div>
+            <div class="add-comment">
+                <input type="text" name="r_content" placeholder="Add a comment...">
+                <!-- <button class="post-comment-button">Post</button> -->
+                <input type="hidden" name="r_no" value="{{m_no}}">
+                <input type="hidden" name="r_num" value="">
+                <input type="hidden" name="r_code" value="{{result.0.b_code}}">
+                <input type="button" id="bt_save" name="bt_save" value="등록" onclick="re_save()">
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <script src="{% static 'js/scripts.js' %}"></script>
+  </form>
+  </body>
+</html>

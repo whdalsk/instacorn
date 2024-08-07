@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> </title> 
+	<style type="text/css">
+	  
+	</style>
+</head> 
+{% extends 'inspwdbase.html' %}
+<body>
+    {% block content %}
+
+	<!--Reset Password-->
+    <div>
+	    <h2>패스워드 변경 완료</h2>
+		<hr>
+        <a href="{% url 'password_reset_complete' %}">비밀번호 재설정이 완료되었습니다.</a>
+        <p>패스워드 변경이 완료되었습니다. instacorn에서 다시 로그인 해주세요.</p>
+    </div>
+
+    {% endblock %}
+   
+   
+	
+</body>
+</html>

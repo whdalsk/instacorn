@@ -1,0 +1,122 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="shortcut icon" href="/image/logo.jpeg" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/b06a377e67.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/indexrespon.css">
+
+    <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  
+</head>
+
+<body>
+    <div id="signup">
+        <div class="signup">
+            <div id="signupchild1">
+                {% load static %}
+                <!-- <img id="image" src="static/image/img1.png">   {% static 'themeImages/example.jpg' %} -->
+                <img id="image" src="/static/images/img1.png" style="width: 280px;">   
+            </div>
+            <div id="signupmain">
+                <div id="signupchild2">
+                    <br><br>
+                    <h1>instacorn</h1>
+                    <br>
+                    <buttob class="btn1"><i class="fa-brands fa-square-facebook"></i>페이스북으로 로그인</buttob>
+                    <div class="or">OR</div>
+                    <form class="mt-3" action="inslogin.do" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group" style="margin-left: 10px; margin-right: 10px;">
+                            <input type="text" class="form-control" id="m_email" name="m_email" placeholder="이메일을 입력해주세요">
+                        </div>
+                        <div class="form-group"  style="margin-left: 10px; margin-right: 10px;">
+                            <input type="password" class="form-control" id="m_pwd" name="m_pwd" placeholder="비밀번호">
+                        </div>
+                        {% if messages %}
+                            <div >
+                                {% for message in messages %}
+                                    {{ message.tags }}! {{ message.message }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+			<button type="submit" class="signupbtn">로그인</button>
+                        <div><a href="inspwdreset.do">비밀번호 찾기</a></div>
+                    </form>
+                    <div id="p2" style="margin-top: 40px;">
+                        <p>People who use our service may have uploaded your contact information to Instagram. <a
+                                  href="https://www.facebook.com/help/instagram/261704639352628">Learn More</a>
+                        </p>
+                   </div>
+                   <div id="p3">
+                        <p> By signing up, you agree to our Terms , .<a
+                                  href="https://help.instagram.com/1896641480634370/">Privacy Policy and Cookies
+                                  Policy</a></p>
+                   </div>
+                    <div id="signupchild3" style="margin-top: 30px;">
+                        계정이 없으신가요? <a href="insjoin.do">가입하기</a>
+                    </div>
+                    <div id="signupchild4">
+                        
+                        <div class="signupchild4">
+                            <img src="/image/c5Rp7Ym-Klz.png" alt="">
+                            <img src="/image/EHY6QnZYdNX.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        {% if popup_message %}
+        <!-- 팝업 메시지가 있을 경우 모달 창으로 띄우기 -->
+        <script>
+        $(document).ready(function() {
+            $('#popupModal').modal('show');
+        });
+        </script>
+        {% endif %}
+
+        <!-- 팝업 모달 -->
+        <div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="popupModalLabel">알림</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{ popup_message }}</p>
+                        <p><span id="emailAddress">admin_email@example.com</span></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="foot2">
+            <p>© 2024 Instacorn</p>
+        </div>
+    </div>
+    
+
+
+</body>
+
+<script src="static/jsfiles/index.js"></script>
+</html>

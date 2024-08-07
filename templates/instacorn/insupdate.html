@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title> [ insupdate.html ] </title> 
+  <style type="text/css">
+    *{font-size: 14pt; }
+    b{color:green; font-weight: bold;}
+    div{text-align:center;}
+    a{text-decoration: none; color: blue;}
+    a:hover{text-decoration: underline; font-size: 16pt;}
+  </style>
+</head> 
+<body>
+   <!-- ins어플연결 insupdate.html주석 --> 
+   <div>
+      <form action="insupdatesave.do" method="post">   
+        {% csrf_token %}  <!-- 꼭필요 Cross-Site Request Forgery 사이트 간 요청 위조 -->
+        <input type="hidden" name="idx" value="{{idx}}" readonly> <br>
+        인스타 게시물 내용 수정
+        <br> <br>
+        <input type="text" name="b_content" value="{{b_content}}">
+        <input  type="submit" value="게시물 내용 수정">
+      </form>      
+  </div>
+</body>
+</html> 
