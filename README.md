@@ -60,6 +60,12 @@
 
 <br>
 
+## ERD
+
+![image](https://github.com/user-attachments/assets/964c84ed-3ee4-4107-a353-7fe0745aba57)
+
+<br>
+
 ## 기능
 
 ### 회원가입
